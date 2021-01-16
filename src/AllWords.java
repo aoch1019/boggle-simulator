@@ -36,19 +36,6 @@ public class AllWords {
 		return letters;
 	}
 	
-	void beginPaths() {
-		for(int i = 0; i < letters.length; i++) {
-			for(int j = 0; j < letters[i].length; j++) {
-				HashSet<HashMap<Integer, Integer>> seen = new HashSet<HashMap<Integer, Integer>>();
-				HashMap<Integer, Integer> toAdd = new HashMap<Integer, Integer>();
-				toAdd.put(i, j);
-				seen.add(toAdd);
-				String currStr = letters[i][j];
-				navigatePaths(i, j, seen, currStr);
-			}
-		}
-	}
-	
 	void beginPathsStart() {
 		for(int i = 0; i < letters.length; i++) {
 			for(int j = 0; j < letters[i].length; j++) {
@@ -103,82 +90,6 @@ public class AllWords {
 				}
 			}
 		}
-		
-//		if(bottomRow < letters.length && leftCol >= 0) {
-//			int newLocation = (bottomRow * 5) + leftCol;
-//			beginPaths2(currWord + letters[bottomRow][leftCol], newLocation, seen);
-//		}
-		
-		
-		// Note -- continue making coordinates for all surrounding spots. Then check if a coordinate is valid. If it is, call beginPaths2 recursively.
-		
-//		if(location % 5 == 0) {
-//			beginPaths2(currWord + letters[location / 5)[location / ]
-//		}
-	}
-	
-	void navigatePaths(int i, int j, HashSet<HashMap<Integer, Integer>> seen, String currStr) {
-		int[] directionsI = getPossibleDirections(i, letters.length);
-		int[] directionsJ = getPossibleDirections(j, letters[i].length);
-		System.out.println("For the coordinates (" + i + ", " + j + ")...");
-		if(directionsI.length == 3) {
-           System.out.println("i can go " + directionsI[0] + " , " + directionsI[1] + " , " + directionsI[2]);
-		}
-		else {
-	           System.out.println("i can go " + directionsI[0] + " , " + directionsI[1]);
-		}
-		if(directionsJ.length == 3) {
-	           System.out.println("j can go " + directionsJ[0] + " , " + directionsJ[1] + " , " + directionsJ[2]);
-			}
-			else {
-		           System.out.println("i can go " + directionsJ[0] + " , " + directionsJ[1]);
-			}
-		
-		for (int dirI : directionsI) {
-			for (int dirJ : directionsJ) {
-				HashMap<Integer, Integer> toAdd = new HashMap<Integer, Integer>();
-				int newI = i + dirI;
-				int newJ = j + dirJ;
-				if(newI == i && newJ == j) {
-					continue;
-				}
-				toAdd.put(newI, newJ);
-				if (seen.contains(toAdd) || currStr.length() >= 7) {
-					return;
-				}
-				else {
-					currStr = currStr + letters[newI][newJ];
-					
-					this.words.add(currStr);
-					//Todo: Check if currStr is a word! If it is, add it to this.words.
-					seen.add(toAdd);
-					navigatePaths(newI, newJ, seen, currStr);
-				}
-			}
-		}
-	}
-	
-	int[] getPossibleDirections(int a, int length) {
-		
-		int[] possibleDirections;
-		if(a == 0) {
-			possibleDirections = new int[2];
-			possibleDirections[0] = 0;
-			possibleDirections[1] = 1;
-		}
-		else if(a == length - 1) {
-			possibleDirections = new int[2];
-			possibleDirections[0] = -1;
-			possibleDirections[1] = 0;
-		}
-		else {
-			possibleDirections = new int[3];
-			possibleDirections[0] = -1;
-			possibleDirections[1] = 0;
-			possibleDirections[2] = 1;
-		}
-		
-		return possibleDirections;
 	}
 	
 	void printWords() {

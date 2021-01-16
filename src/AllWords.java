@@ -40,32 +40,20 @@ public class AllWords {
 		for(int i = 0; i < letters.length; i++) {
 			for(int j = 0; j < letters[i].length; j++) {
 				int location = (i * 5) + j;
-				beginPaths2("", location, new ArrayList<Integer>());
+				beginPathsRecursion("", location, new ArrayList<Integer>());
 			}
 		}
 	}
 	
-	void beginPaths2(String currWord, int location, ArrayList<Integer> seen) {
-		
-		String toAdd = "";
-		
-		if(currWord.length() > 0) {
-			toAdd = currWord.substring(0, currWord.length() - 1);
-		}
+	void beginPathsRecursion(String currWord, int location, ArrayList<Integer> seen) {
 
-		if(dict.contains(toAdd) && !words.contains(toAdd)) {
-			System.out.println(toAdd + " is a word!");
-			words.add(toAdd);
+		if(!words.contains(currWord) && dict.contains(currWord)) {
+//			System.out.println(currWord + " is a word!");
+			words.add(currWord);
 		}
-		else if(!sequenceExistsInDict(toAdd)){
+		else if(!sequenceExistsInDict(currWord)){
 			return;
 		}
-
-		if(seen.contains(location)) {
-			return;
-		}
-		
-		seen.add(location);
 		
 		int currRow = (int)Math.floor(location / 5);
 		int currCol = (location % 5);
@@ -81,14 +69,14 @@ public class AllWords {
 		
 		for(int r : rows) {
 			for(int c : cols) {
-				boolean valid = r >= 0 && r < letters.length && c >= 0 && c < letters.length;
-				if(valid) {
+				if(r >= 0 && r < letters.length && c >= 0 && c < letters.length) {
 					int newLocation = (r * 5) + c;
-					if(newLocation == location) {
+					if(newLocation == location || seen.contains(newLocation)) {
 						continue;
 					}
 					ArrayList<Integer> seenCopy = (ArrayList)seen.clone();
-					beginPaths2(currWord + letters[r][c], newLocation, seenCopy);
+					seenCopy.add(newLocation);
+					beginPathsRecursion(currWord + letters[r][c], newLocation, seenCopy);
 				}
 			}
 		}
@@ -104,12 +92,21 @@ public class AllWords {
 	}
 	
 	void printWords() {
+		System.out.println("\nHere are all possible words...");
+		String longest = "";
 		for(String str : this.words) {
 			System.out.println(str);
+			if(str.length() > longest.length()) {
+				longest = str;
+			}
 		}
+		
+		System.out.println("\nThere are a total of " + words.size() + " valid words.");
+		System.out.println("Fun fact: The longest possible word is " + longest);
 	}
 	
-	void printFakeBoard() {
+	void printBoard() {
+		System.out.println("\nHere is a randomly generated Boggle board...\n");
 		for(String[] row : letters) {
 			for(String str : row) {
 				System.out.print(str + " ");
@@ -122,7 +119,7 @@ public class AllWords {
 		// TODO Auto-generated method stub
 		AllWords aw = new AllWords();
 //		aw.board.display();
-		aw.printFakeBoard();
+		aw.printBoard();
 		aw.beginPathsStart();
 		aw.printWords();
 	}

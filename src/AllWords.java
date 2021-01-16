@@ -54,8 +54,13 @@ public class AllWords {
 		}
 
 		if(dict.contains(toAdd) && !words.contains(toAdd)) {
+			System.out.println(toAdd + " is a word!");
 			words.add(toAdd);
 		}
+		else if(!sequenceExistsInDict(toAdd)){
+			return;
+		}
+		
 		if(currWord.length() > 8) {
 			return;
 		}
@@ -90,6 +95,15 @@ public class AllWords {
 				}
 			}
 		}
+	}
+	
+	boolean sequenceExistsInDict(String sequence){
+		for(String word : dict) {
+			if(word.startsWith(sequence)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	void printWords() {

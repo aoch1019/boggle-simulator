@@ -60,10 +60,7 @@ public class AllWords {
 		else if(!sequenceExistsInDict(toAdd)){
 			return;
 		}
-		
-		if(currWord.length() > 8) {
-			return;
-		}
+
 		if(seen.contains(location)) {
 			return;
 		}

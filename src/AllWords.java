@@ -72,17 +72,19 @@ public class AllWords {
 			if(word.equals(currWord) && !words.contains(currWord)) {
 				words.add(currWord);
 			}
+			// If this condition is met, we know we have alphabetically passed currWord if it exists in the dictionary.
 			else if(word.startsWith(currWord)) {
 				sequenceExistsInDict = true;
-			}
-			else if(sequenceExistsInDict && word.compareToIgnoreCase(currWord) > 0) {
 				break;
 			}
-			else if(!sequenceExistsInDict && word.charAt(0) > currWord.charAt(0)) {
+			// If we have not shown the sequence exists and we have passed currWord's starting letter,
+			// then we know the word does not exist so we can stop this branch.
+			else if(word.charAt(0) > currWord.charAt(0)) {
 				return;
 			}
 		}
 		
+		// This is to cover the edge case of the word starting with z AND not having a matching sequence in the dictionary.
 		if(!sequenceExistsInDict) {
 			return;
 		}

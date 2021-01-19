@@ -5,6 +5,22 @@ public class AllWords {
 
 	Board board;
 	String[][] letters;
+	public String[][] getLetters() {
+		return letters;
+	}
+
+	public void setLetters(String[][] letters) {
+		this.letters = letters;
+	}
+
+	public ArrayList<String> getWords() {
+		return words;
+	}
+
+	public void setWords(ArrayList<String> words) {
+		this.words = words;
+	}
+
 	ArrayList<String> words;
 	ArrayList<String> dict;
 	
@@ -46,12 +62,28 @@ public class AllWords {
 	}
 	
 	void beginPathsRecursion(String currWord, int location, ArrayList<Integer> seen) {
-
-		if(!words.contains(currWord) && dict.contains(currWord)) {
-//			System.out.println(currWord + " is a word!");
-			words.add(currWord);
+		
+		boolean sequenceExistsInDict = false;
+		
+			// Go through the dictionary. For each word check if it's equal to the current word (and not already found via another path).
+		    // If it's not equal, check if the current dictionary word starts with currWord. If this second condition is never met, then we want to stop the branch.
+		    // If we have passed the word we are looking for alphabetically, we can exit the loop.
+		for(String word : dict) {
+			if(word.equals(currWord) && !words.contains(currWord)) {
+				words.add(currWord);
+			}
+			else if(word.startsWith(currWord)) {
+				sequenceExistsInDict = true;
+			}
+			else if(sequenceExistsInDict && word.compareToIgnoreCase(currWord) > 0) {
+				break;
+			}
+			else if(!sequenceExistsInDict && word.charAt(0) > currWord.charAt(0)) {
+				return;
+			}
 		}
-		else if(!sequenceExistsInDict(currWord)){
+		
+		if(!sequenceExistsInDict) {
 			return;
 		}
 		
@@ -82,15 +114,6 @@ public class AllWords {
 		}
 	}
 	
-	boolean sequenceExistsInDict(String sequence){
-		for(String word : dict) {
-			if(word.startsWith(sequence)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	void printWords() {
 		System.out.println("\nHere are all possible words...");
 		String longest = "";
@@ -117,11 +140,30 @@ public class AllWords {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		AllWords aw = new AllWords();
-//		aw.board.display();
-		aw.printBoard();
-		aw.beginPathsStart();
-		aw.printWords();
+		
+		HashMap<String, Integer> wordCount = new HashMap<String, Integer>();
+		
+		for(int i = 0; i < 1; i++) {
+			AllWords aw = new AllWords();
+//			aw.board.display();
+			aw.printBoard();
+			aw.beginPathsStart();
+			aw.printWords();	
+			for(String word : aw.getWords()) {
+				if(wordCount.containsKey(word)) {
+					wordCount.put(word, wordCount.get(word) + 1);
+				}
+				else {
+					wordCount.put(word, 1);
+				}
+			}
+		}
+		
+		for(String key : wordCount.keySet()) {
+			if(key.length() >= 6 && wordCount.get(key) > 1) {
+				System.out.println(key + " appears " + wordCount.get(key) + " times");	
+			}
+		}
 	}
 
 }

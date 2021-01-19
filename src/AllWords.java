@@ -62,15 +62,17 @@ public class AllWords {
 	}
 	
 	void beginPathsRecursion(String currWord, int location, ArrayList<Integer> seen) {
-		
+			
 		boolean sequenceExistsInDict = false;
 		
 			// Go through the dictionary. For each word check if it's equal to the current word (and not already found via another path).
 		    // If it's not equal, check if the current dictionary word starts with currWord. If this second condition is never met, then we want to stop the branch.
 		    // If we have passed the word we are looking for alphabetically, we can exit the loop.
 		for(String word : dict) {
-			if(word.equals(currWord) && !words.contains(currWord)) {
-				words.add(currWord);
+			if(word.equals(currWord)) {
+				if(!words.contains(currWord)) {
+					words.add(currWord);	
+				}
 			}
 			// If this condition is met, we know we have alphabetically passed currWord if it exists in the dictionary.
 			else if(word.startsWith(currWord)) {
@@ -147,6 +149,9 @@ public class AllWords {
 		
 		for(int i = 0; i < 1; i++) {
 			AllWords aw = new AllWords();
+//			String[][] hardcodedBoard = {{"c", "n", "r", "i", "t"}, {"l", "s", "x", "a", "e"}, {"t", "m", "l", "r", "v"}, {"f", "l", "o", "t", "a"}, {"o", "c", "a", "p", "y"}};
+//			String[][] hardcodedBoard2 = {{"r", "u", "o", "f", "p"}, {"t", "s", "o", "u", "g"}, {"x", "p", "c", "e", "n"}, {"e", "a", "r", "r", "o"}, {"h", "h", "e", "e", "t"}};			
+//			aw.setLetters(hardcodedBoard2);
 //			aw.board.display();
 			aw.printBoard();
 			aw.beginPathsStart();

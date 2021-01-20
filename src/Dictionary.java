@@ -15,7 +15,7 @@ public class Dictionary {
 			while (fileScanner.hasNext()) {
 				String currWord = fileScanner.next();
 				if(currWord.length() >= 4) {
-					dict.add(currWord);	
+					dict.add(currWord.toLowerCase());	
 				}
 			}
 		} catch (FileNotFoundException e) {
